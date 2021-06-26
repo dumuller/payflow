@@ -64,6 +64,11 @@ class AppTextStyles {
   fontWeight: FontWeight.w700,
   color: AppColors.primary,
   );
+  static final buttonInput = GoogleFonts.inter(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    color: AppColors.input,
+  );
   static final buttonBoldHeading = GoogleFonts.inter(
   fontSize: 15,
   fontWeight: FontWeight.w700,

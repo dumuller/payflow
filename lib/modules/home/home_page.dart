@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:payflow/modules/extract/extract_page.dart';
 import 'package:payflow/modules/home/home_controller.dart';
+import 'package:payflow/modules/meus_boletos/meus_boletos_page.dart';
+import 'package:payflow/shared/models/user_model.dart';
 import 'package:payflow/shared/themes/app_text_styles.dart';
 import 'package:payflow/shared/themes/appcolors.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final UserModel userModel;
+  const HomePage({Key? key, required this.userModel}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -13,8 +17,12 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final controller = HomeController();
   final pages = [
-    Container(color: Colors.blue,),
-    Container(color: Colors.red),
+    Container(
+      child: MeusBoletosPage(),
+    ),
+    Container(
+      child: ExtractPage(),
+    ),
   ];
   @override
   Widget build(BuildContext context) {
@@ -32,7 +40,7 @@ class _HomePageState extends State<HomePage> {
                     style: AppTextStyles.titleRegular,
                     children: [
                       TextSpan(
-                        text: "Eduardo",
+                        text: "${widget.userModel.name}",
                         style: AppTextStyles.titleBoldBackground,
                       )]),
               ),
@@ -46,6 +54,7 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(5),
+                  image: DecorationImage(image: NetworkImage("${widget.userModel.photoUrl}"))
                 ),
               ),
             ),
@@ -59,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             IconButton(
-                icon: Icon(Icons.home, color: AppColors.primary,),
+                icon: Icon(Icons.home, color: controller.currentPage == 0 ? AppColors.primary : AppColors.body,),
                 onPressed: (){
                   controller.setPage(0);
                   setState(() {
@@ -68,7 +77,10 @@ class _HomePageState extends State<HomePage> {
                 }
             ),
             GestureDetector(
-              onTap: (){},
+              onTap: (){
+                //Navigator.pushNamed(context, "/insertboleto");
+                Navigator.pushNamed(context, "/barcodescanner");
+              },
               child: Container(
                 width: 56,
                 height: 56,
@@ -84,7 +96,7 @@ class _HomePageState extends State<HomePage> {
             IconButton(
                 icon: Icon(
                     Icons.description_outlined,
-                  color: AppColors.body,
+                  color: controller.currentPage == 1 ? AppColors.primary : AppColors.body,
                 ),
                 onPressed: (){
                   controller.setPage(1);
